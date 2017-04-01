@@ -11,50 +11,61 @@ public class PuntoPalíndromos {
      * Metodo que busca el proximo palindromo y lo escribe en un archivo
      * @variable <bf> bufer nos va permitir acceder a un archivo
      * @variable <bw> bufer nos va permitir crear  un archivo
-     * @variable <numero> representa los numero que contiene el archivo
+     * @variable <numero> representa los numero que contiene el archivo este valor es entero para poder hacer operaciones mate,aticas
      * @variable <cadena> representa los numeros que contiene el archivo en forma de String
      * @variable <tamano> es el tamaño (cantidad de caracteres) del numero
      * @variable <polindromo> controla si se econtro o no el numero (verdadero o falso)
      * @variables <mitadA, mitadB> son las mitades de la cadena a comparar
+     * @variables <mitadAC> es e numero central si si la cantidad de caracteres es impar
      */
     public static void leerArchivo() throws IOException {
 
         BufferedReader bf = new BufferedReader(new FileReader("./entrada.in"));
         BufferedWriter bw = new BufferedWriter(new FileWriter("./salida.out"));
         int numero = 0, tamano = 0;
-        String cadena = "", mitadA, mitadB;
-        boolean polindorno = false;
+        String cadena = "", mitadA, mitadC, mitadB;
+
 
         // Recorremos todas las lineas del archivo
         while ((cadena = bf.readLine()) != null) {
 
-            polindorno = false;// en cada linea permitimos la busqueda por lo menos una vez
+            tamano = cadena.length();
 
-            while(!polindorno){
+            mitadA = (tamano == 1)? cadena : cadena.substring(0,(tamano/2));
+            numero = Integer.parseInt(mitadA);
 
-                tamano = cadena.length();
+            // Si el tamaño del numero es par los partimos a la mitad sino sumanos 1 a la mitad para no tomar
+            // el numero situado en la mitad del mismo
+            if(tamano % 2 == 0 ){
+                mitadB  = (tamano == 1)? "0" : new StringBuilder(cadena.substring((tamano/2), tamano)).toString();
 
-                // Si el tamaño del numero es par los partimos a la mitad sino sumanos 1 a la mitad para no tomar
-                // el numero situado en la mitad del mismo
-                mitadA = cadena.substring(0,(tamano/2));
-                mitadB = (tamano % 2 == 0 )?
-                           new StringBuilder(cadena.substring((tamano/2), tamano)).reverse().toString()
-                         : new StringBuilder(cadena.substring((tamano/2)+1, tamano)).reverse().toString();
-
-                //Dividimos la cadena en dos Strings y la conparamos pero la segun parte la reversamos ej : abc ->n cba
-                // si son iguales encontramos el numero
-                if(mitadA.equals(mitadB)){
-                    polindorno = true;
-                    bw.write(cadena+"\n");
+                // Si la cantidad de caracteres es par entonces jugaremos sin un pivote central mitadAC
+                if(Integer.parseInt(mitadA)  >= Integer.parseInt(mitadB)){
+                    cadena = mitadA+(new StringBuilder(mitadA).reverse());
                 }else{
-
-                   // convertimos la cadena a numero para poderle aumentar de a 1
-                   numero = Integer.parseInt(cadena);
-                   numero++;
-                   cadena = Integer.toString(numero);
+                // Si la mitad de la izquierda es menor sumaremos 1 y la segunda mitad sera esta primera reversada
+                    numero = numero + 1;
+                    cadena = numero+(new StringBuilder(""+numero).reverse().toString());
                 }
+
+            }else if (tamano == 1){
+                cadena = cadena;
+            }else{
+                mitadC = cadena.substring((tamano/2), (tamano/2)+1);
+                mitadB  = new StringBuilder(cadena.substring((tamano/2)+1, tamano)).toString();
+
+                // Si la cantidad de caracteres es impar jugaremos un pivote que sera el caracter medio
+                if(Integer.parseInt(mitadA)  >= Integer.parseInt(mitadB)){
+                    cadena = mitadA+mitadC+(new StringBuilder(mitadA).reverse());
+                }else{
+                    mitadC = ""+(Integer.parseInt(mitadC)+1);
+                    cadena = mitadA+mitadC+(new StringBuilder(mitadA).reverse().toString());
+                }
+
             }
 
+            // Escribimos los resultados en el archivo
+            bw.write(cadena+"\n");
         }
         bw.close();
 
