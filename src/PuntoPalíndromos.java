@@ -15,7 +15,7 @@ public class PuntoPalíndromos {
         boolean polindorno = false;
 
         while ((cadena = bf.readLine()) != null) {
-
+            polindorno = false;
             while(!polindorno){
                 tamano = cadena.length();
                 if (tamano % 2 == 0 ) {
@@ -32,7 +32,7 @@ public class PuntoPalíndromos {
 
                     }
                 }else{
-                    if(cadena.substring(0,(tamano/2)).equals(new StringBuilder(cadena.substring((tamano/2)+1, tamano)).reverse())){
+                    if(cadena.substring(0,(tamano/2)).equals(new StringBuilder(cadena.substring((tamano/2)+1, tamano)).reverse().toString())){
                         polindorno = true;
                         System.out.println(cadena);
                     }else{
@@ -41,15 +41,11 @@ public class PuntoPalíndromos {
                         cadena = Integer.toString(numero);
                         System.out.println(cadena.substring(0,(tamano/2)));
                         System.out.println(new StringBuilder(cadena.substring((tamano/2)+1, tamano)).reverse());
-                        polindorno = true;
                     }
                 }
 
             }
-
-
-
-
+            
         }
 
     }
