@@ -9,7 +9,8 @@ public class PuntoPalíndromos {
 
     /**
      * Metodo que busca el proximo palindromo y lo escribe en un archivo
-     * @variable <bf> bufer nos per va permitir acceder a un archivo
+     * @variable <bf> bufer nos va permitir acceder a un archivo
+     * @variable <bw> bufer nos va permitir crear  un archivo
      * @variable <numero> representa los numero que contiene el archivo
      * @variable <cadena> representa los numeros que contiene el archivo en forma de String
      * @variable <tamano> es el tamaño (cantidad de caracteres) del numero
@@ -19,6 +20,7 @@ public class PuntoPalíndromos {
     public static void leerArchivo() throws IOException {
 
         BufferedReader bf = new BufferedReader(new FileReader("./entrada.in"));
+        BufferedWriter bw = new BufferedWriter(new FileWriter("./salida.out"));
         int numero = 0, tamano = 0;
         String cadena = "", mitadA, mitadB;
         boolean polindorno = false;
@@ -43,21 +45,19 @@ public class PuntoPalíndromos {
                 // si son iguales encontramos el numero
                 if(mitadA.equals(mitadB)){
                     polindorno = true;
-                    System.out.println(cadena);
+                    bw.write(cadena+"\n");
                 }else{
 
                    // convertimos la cadena a numero para poderle aumentar de a 1
                    numero = Integer.parseInt(cadena);
                    numero++;
                    cadena = Integer.toString(numero);
-                    System.out.println(cadena.substring(0,(tamano/2)));
-                    System.out.println(new StringBuilder(cadena.substring((tamano/2), tamano)).reverse());
-
                 }
             }
 
         }
-        
+        bw.close();
+
     }
 
 
